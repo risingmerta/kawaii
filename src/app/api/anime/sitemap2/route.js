@@ -36,7 +36,7 @@ const fetchPage = async (page) => {
   const dataList = data.results.data;
 
   dataList.forEach((item) => {
-    urls.push(`${baseUrl}${item.id}`);
+    urls.push(`${baseUrl}/${item.id}`);
   });
 
   return urls; // Return the collected URLs for this page

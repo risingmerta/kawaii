@@ -37,7 +37,7 @@ const fetchAllUrls = async () => {
       const dataList = data.results.data;
 
       dataList.forEach((item) => {
-        allUrls.push(`${baseUrl}${item.id}`);
+        allUrls.push(`${baseUrl}/${item.id}`);
       });
 
       console.log(`Fetched and processed page ${page}`);
