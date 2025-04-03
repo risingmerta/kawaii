@@ -1,65 +1,25 @@
 import SearchResults from "@/component/AZ/az";
-import { MongoClient } from "mongodb";
 import Script from "next/script";
 import React from "react";
 
 export async function generateMetadata({ params }) {
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Animoon"; // Default if env is missing
   const idd = "Anime";
 
   return {
-    title: `Watch ${idd} English Sub/Dub online free on Animoon, free Anime Streaming`,
-    description: `Animoon is the best site to watch
+    title: `Watch ${idd} English Sub/Dub online free on ${siteName}, free Anime Streaming`,
+    description: `${siteName} is the best site to watch
                     ${idd} SUB online, or you can even
                     watch ${idd} DUB in HD quality. You
                     can also watch underrated anime
-                    on Animoon website.`,
+                    on ${siteName} website.`,
   };
 }
 
 export default async function page({ params, searchParams }) {
   const param = await params;
   const searchParam = await searchParams;
-  let pageParam = searchParam?.page || "1";
   let json = "";
-  const cacheMaxAge = 345600; // 4 days in seconds
-
-  const mongoUri =
-    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
-  const dbName = "mydatabase";
-  const azCollectionName = searchParam.sort
-    ? "az-list_" + searchParam.sort.toString().toLowerCase()
-    : "az-list";
-
-  const client = new MongoClient(mongoUri);
-  let existingAnime = [];
-  let count;
-
-  try {
-    // Connect to MongoDB
-    await client.connect();
-    console.log("Connected to MongoDB");
-
-    const db = client.db(dbName);
-
-    // Fetch homepage data
-
-    // Check if anime from spotlights exists in the animeInfo collection
-    const animeCollection = db.collection(azCollectionName.trim());
-    existingAnime = await animeCollection.findOne({
-      page: parseInt(pageParam),
-    });
-
-    if (existingAnime) {
-      existingAnime = JSON.parse(JSON.stringify(existingAnime)); // Convert BSON to plain object
-    }
-
-    count = await db.collection(azCollectionName.trim()).countDocuments();
-  } catch (error) {
-    console.error("Error fetching data from MongoDB or API:", error.message);
-  } finally {
-    await client.close();
-    console.log("MongoDB connection closed");
-  }
 
   try {
     const url = searchParam.sort
@@ -87,7 +47,7 @@ export default async function page({ params, searchParams }) {
         src="//disgustingmad.com/a5/d2/60/a5d260a809e0ec23b08c279ab693d778.js"
       />
       <SearchResults
-        el={existingAnime}
+        el={json}
         sort={searchParam.sort}
         page={searchParam.page}
         totalPages={count}

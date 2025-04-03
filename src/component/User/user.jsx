@@ -6,7 +6,6 @@ import MyComponent from "@/component/ContinueWatching/ContinueWatching";
 import WatchList from "@/component/WatchList/WatchList";
 import Settings from "@/component/Settings/Settings";
 import Notification from "@/component/Notification/Notification";
-import { SessionProvider } from "next-auth/react";
 import Navbar from "../Navbar/Navbar";
 import Profilo from "../Profilo/Profilo";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
@@ -29,19 +28,18 @@ export default function User(props) {
 
   return (
     <>
-      <SessionProvider>
-        <Navbar
-          lang={lang}
-          sign={sign}
-          setProfiIsOpen={setProfiIsOpen}
-          profiIsOpen={profiIsOpen}
-        />
-        {profiIsOpen ? (
-          <Profilo setProfiIsOpen={setProfiIsOpen} profiIsOpen={profiIsOpen} />
-        ) : (
-          ""
-        )}
-        {logIsOpen ? (
+      <Navbar
+        lang={lang}
+        sign={sign}
+        setProfiIsOpen={setProfiIsOpen}
+        profiIsOpen={profiIsOpen}
+      />
+      {/* {profiIsOpen ? (
+        <Profilo setProfiIsOpen={setProfiIsOpen} profiIsOpen={profiIsOpen} />
+      ) : (
+        ""
+      )} */}
+      {/* {logIsOpen ? (
           <SignInSignUpModal
             logIsOpen={logIsOpen}
             setLogIsOpen={setLogIsOpen}
@@ -49,19 +47,26 @@ export default function User(props) {
           />
         ) : (
           ""
-        )}
-        <div>
-          <Slab slabId={slabId} />
-        </div>
-        {props.id === "profile" ? <Profito /> : ""}
-        {props.id === "continue-watching" ? <MyComponent page={props.page}/> : ""}
-        {props.id === "watch-list" ? <WatchList type={props.type} ipage={props.page}/> : ""}
-        {props.id === "settings" ? <Settings /> : ""}
-        {props.id === "notification" ? <Notification /> : ""}
-        <div>
-          <Footer />
-        </div>
-      </SessionProvider>
+        )} */}
+      <div>
+        <Slab slabId={slabId} />
+      </div>
+      {props.id === "profile" ? <Profito /> : ""}
+      {props.id === "continue-watching" ? (
+        <MyComponent page={props.page} />
+      ) : (
+        ""
+      )}
+      {props.id === "watch-list" ? (
+        <WatchList type={props.type} ipage={props.page} />
+      ) : (
+        ""
+      )}
+      {props.id === "settings" ? <Settings /> : ""}
+      {props.id === "notification" ? <Notification /> : ""}
+      <div>
+        <Footer />
+      </div>
     </>
   );
 }

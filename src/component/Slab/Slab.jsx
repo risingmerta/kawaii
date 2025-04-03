@@ -3,20 +3,20 @@ import React from "react";
 import { FaBell, FaCog, FaHeart, FaHistory, FaUser } from "react-icons/fa";
 import Link from "next/link";
 import "./slab.css";
-import { useSession } from "next-auth/react";
 
 export default function Slab(props) {
-
-  const { data: session } = useSession();
   return (
     <div className="allpit">
-      <img className="allpit-background" src={session?.user.avatar.replace(
-                "https://cdn.noitatnemucod.net/avatar/100x100/",
-                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
-              )} alt="pop" />
-      <div className="hiik">Hi, {session?.user.username}</div>
+      <img
+        className="allpit-background"
+        src={
+          "https://img.flawlessfiles.com/_r/100x100/100/avatar/demon_splayer/File11.jpg"
+        }
+        alt="pop"
+      />
+      <div className="hiik">Hi, {"user"}</div>
       <div className="linkok">
-        <Link
+        {/* <Link
           href={"/user/profile"}
           className={`newPo ${props.slabId === "profile" ? "impot" : ""}`}
         >
@@ -24,7 +24,7 @@ export default function Slab(props) {
             <FaUser />
           </div>
           <div className="namino">Profile</div>
-        </Link>
+        </Link> */}
         <Link
           href={"/user/continue-watching"}
           className={`newPo ${

@@ -34,8 +34,7 @@ function transformURL(originalURL) {
   return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
 }
 
-
-export default function Hero({ trendingAnime, existingAnime, selectL }) {
+export default function Hero({ trendingAnime, selectL }) {
   const [localStorageData, setLocalStorageData] = useState({});
 
   useEffect(() => {
@@ -79,7 +78,7 @@ export default function Hero({ trendingAnime, existingAnime, selectL }) {
                 </span>
 
                 <h1 className="anime-title">
-                  {title.length < 58 ? title : title.slice(0, 58) + "..."}
+                  {title?.length < 58 ? title : title?.slice(0, 58) + "..."}
                 </h1>
                 <div className="anime-statistics">
                   <span className="anime-st-item">
@@ -116,13 +115,13 @@ export default function Hero({ trendingAnime, existingAnime, selectL }) {
                   </span>
                 </div>
                 <p className="description">{removeHtmlTags(description)}</p>
-                <div className="anime-statistic">
+                {/* <div className="anime-statistic">
                   {existingAnime[idx].Genres.map((genre, index) => (
                     <span key={index} className="anime-st-item genre-item">
                       {genre}
                     </span>
                   ))}
-                </div>
+                </div> */}
                 <div className="button-wrapper">
                   <Link
                     href={
@@ -140,30 +139,24 @@ export default function Hero({ trendingAnime, existingAnime, selectL }) {
                   </Link>
                 </div>
               </div>
-              <div className="posterImg">
+              {/* <div className="posterImg">
                 <img
                   src={
                     // existingAnime[idx].poster ||
-                    transformURL(existingAnime[idx].poster)
+                    transformURL(anime.poster)
                   }
                   alt={anime.title}
                 />
-              </div>
+              </div> */}
             </div>
             <img
               className="carousel-img previ"
-              src={
-                // anime.poster ||
-                transformURL(anime.poster)
-              }
+              src={anime.poster}
               alt={title}
             />
             <img
               className="carousel-img afteri"
-              src={
-                // existingAnime[idx].poster ||
-                transformURL(existingAnime[idx].poster)
-              }
+              src={anime.poster}
               alt={title}
             />
           </div>

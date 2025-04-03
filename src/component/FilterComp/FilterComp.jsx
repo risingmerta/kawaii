@@ -7,7 +7,6 @@ import TopTenAnime from "../TopTen/TopTenAnime";
 import Navbar from "../Navbar/Navbar";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import Profilo from "../Profilo/Profilo";
-import { SessionProvider } from "next-auth/react";
 import Footer from "../Footer/Footer";
 import { useRouter } from "next/navigation";
 
@@ -279,7 +278,6 @@ const FilterComp = (props) => {
   return (
     <>
       <div>
-        <SessionProvider>
           <div>
             <Navbar
               lang={lang}
@@ -463,7 +461,6 @@ const FilterComp = (props) => {
           <div>
             <Footer />
           </div>
-        </SessionProvider>
       </div>
     </>
   );

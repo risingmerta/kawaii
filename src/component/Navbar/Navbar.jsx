@@ -5,18 +5,13 @@ import SearchInput from "./SearchInput";
 import Social from "./Social";
 import Action from "./Action";
 import "./NavCss/nav.css";
-import logo from "../../../public/logo.png";
-import Image from "next/image";
 import Link from "next/link";
 import NavSidebar from "../NavSidebar/NavSidebar";
-import { useSession } from "next-auth/react";
 
-const Navbar = ({ lang, sign, setProfiIsOpen }) => {
+const Navbar = ({ lang, setProfiIsOpen }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showFloat, setShowFloat] = useState(false);
-
-  const { data: session } = useSession();
 
   const showTogg = () => {
     if (showFloat) {
@@ -52,7 +47,7 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
       const subdomain = hostname.split(".")[0]; // Extract subdomain
 
       // Change text based on subdomain
-      setSiteName(subdomain)
+      setSiteName(subdomain);
     }
   }, []);
 
@@ -90,21 +85,12 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
           <div className="nav-ser" onClick={() => showTogg()}>
             <FaSearch />
           </div>
-          {session ? (
-            <img
-              src={session.user.avatar.replace(
-                "https://cdn.noitatnemucod.net/avatar/100x100/",
-                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
-              ) || "userData?.randomImage"}
-              className="profile-ico"
-              onClick={toggleProfile}
-              alt={session.user.username || "userData?.username" || "user"}
-            />
-          ) : (
-            <div className="nav-log" onClick={() => sign(true)}>
-              Login
-            </div>
-          )}
+          <img
+            src={"https://hianime.to/images/no-avatar.jpeg"}
+            className="profile-ico"
+            onClick={toggleProfile}
+            alt={"user"}
+          />
         </div>
       </div>
       {showFloat && (

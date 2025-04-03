@@ -5,12 +5,13 @@ import Script from "next/script";
 import React from "react";
 
 export async function generateMetadata({ searchParams }) {
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Animoon"; // Default if env is missing
   const searchParam = await searchParams;
   const idd = searchParam.name || "Anime"; // Default fallback for name
 
   return {
-    title: `Watch ${idd} Anime English Sub/Dub online free on Animoon.me`,
-    description: `Animoon is the best site to watch ${idd} Anime SUB online, or you can even watch ${idd} Anime DUB in HD quality. You can also watch underrated anime on Animoon website.`,
+    title: `Watch ${idd} Anime English Sub/Dub online free on ${siteName}`,
+    description: `${siteName} is the best site to watch ${idd} Anime SUB online, or you can even watch ${idd} Anime DUB in HD quality. You can also watch underrated anime on ${siteName} website.`,
   };
 }
 
@@ -24,59 +25,21 @@ export default async function page({ searchParams }) {
 
   const pageParam = searchParam.page ? searchParam.page : "1";
 
-  const mongoUri =
-    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
-  const dbName = "mydatabase";
-  const homeCollectionName = "animoon-home";
-  const genreCollectionName = "genre_" + cate;
+  const [animeResp, homeResp] = await Promise.all([
+    fetch(`https://vimal.animoon.me/api/genre/${date}?page=${pageParam}`, {
+      next: { revalidate: 3600 },
+    }),
+    fetch("https://vimal.animoon.me/api", {
+      next: { revalidate: 3600 },
+    }),
+  ]);
 
-  const client = new MongoClient(mongoUri);
-  let data;
-  let existingAnime = [];
-  let count;
-
-  try {
-    // Connect to MongoDB
-    await client.connect();
-    console.log("Connected to MongoDB");
-
-    const db = client.db(dbName);
-
-    // Fetch homepage data
-    const homeCollection = db.collection(homeCollectionName.trim());
-    const document = await homeCollection.findOne({}); // Adjust query as needed
-
-    if (document) {
-      data = document;
-    } else {
-      console.log("No homepage data found in MongoDB");
-    }
-
-    // If homepage data is missing, fetch from API
-    if (!data) {
-      const res = await fetch("https://vimal.animoon.me/api/");
-      data = await res.json();
-    }
-
-    // Check if anime from spotlights exists in the animeInfo collection
-    const animeCollection = db.collection(genreCollectionName.trim());
-    existingAnime = await animeCollection.findOne({
-      page: parseInt(pageParam),
-    });
-
-    if (existingAnime) {
-      existingAnime = JSON.parse(JSON.stringify(existingAnime)); // Convert BSON to plain object
-    }
-
-    count = await db.collection(genreCollectionName.trim()).countDocuments();
-  } catch (error) {
-    console.error("Error fetching data from MongoDB or API:", error.message);
-  } finally {
-    await client.close();
-    console.log("MongoDB connection closed");
+  if (!animeResp.ok || !homeResp.ok) {
+    throw new Error("Failed to fetch data.");
   }
 
-  const cacheMaxAge = 345600; // Cache for 4 days (in seconds)
+  const data = await animeResp.json();
+  const datal = await homeResp.json();
 
   // Fetch genre-specific anime list and homepage data concurrently
   // Constructing the shareable URL
@@ -90,11 +53,11 @@ export default async function page({ searchParams }) {
         src="//disgustingmad.com/a5/d2/60/a5d260a809e0ec23b08c279ab693d778.js"
       />
       <GenreSidebar
-        data={existingAnime}
+        data={data.results}
         name={cate}
         cate={cate}
-        datal={data}
-        totalPages={count}
+        datal={datal.results}
+        totalPages={data.results.totalPages}
         genre={"yes"}
         ShareUrl={ShareUrl}
         page={pageParam}

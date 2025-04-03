@@ -11,25 +11,23 @@ import {
 } from "react-icons/fa";
 // import useAnime from "@/hooks/useAnime";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function Profilo(props) {
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state for sign-out
-    const router = useRouter();
-  const handleSignOut = async () => {
-    setLoading(true); // Start loading
-    router.refresh(); // This will reload the current page
-    try {
-      await signOut({ redirect: false }); // Sign out user using NextAuth
-    } catch (err) {
-      setError("Error signing out: " + err.message); // Handle sign out error
-    } finally {
-      setLoading(false); // End loading
-    }
-  };
-  const { data: session } = useSession();
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false); // Loading state for sign-out
+  //   const router = useRouter();
+  // const handleSignOut = async () => {
+  //   setLoading(true); // Start loading
+  //   router.refresh(); // This will reload the current page
+  //   try {
+  //     await signOut({ redirect: false }); // Sign out user using NextAuth
+  //   } catch (err) {
+  //     setError("Error signing out: " + err.message); // Handle sign out error
+  //   } finally {
+  //     setLoading(false); // End loading
+  //   }
+  // };
   return (
     <div
       className="profi"
@@ -44,12 +42,12 @@ export default function Profilo(props) {
             : "translateX(250px)",
         }}
       >
-        <div className="logA logAC">{session?.user.username}</div>
-        <div className="logA logAB">{session?.user.email}</div>
-        <Link href={"/user/profile"} className="profD">
+        <div className="logA logAC">{"user"}</div>
+        <div className="logA logAB">{"user@gmail.com"}</div>
+        {/* <Link href={"/user/profile"} className="profD">
           <FaUser />
           Profile
-        </Link>
+        </Link> */}
         <Link href={"/user/continue-watching"} className="profD">
           <FaHistory />
           Continue Watching
@@ -66,10 +64,10 @@ export default function Profilo(props) {
           <FaCog />
           Settings
         </Link>
-        <div className="logD" onClick={handleSignOut} disabled={loading}>
+        {/* <div className="logD" onClick={handleSignOut} disabled={loading}>
           {loading ? "Loging Out..." : "Logout"}
           <FaArrowRight />
-        </div>
+        </div> */}
       </div>
     </div>
   );

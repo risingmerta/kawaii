@@ -12,7 +12,6 @@ import {
 import Share from "../Share/Share";
 import { AiFillAudio } from "react-icons/ai";
 // import { useLogModal } from "@/context/LogModalContext";
-import { useSession } from "next-auth/react";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import { PiBroadcastFill } from "react-icons/pi";
 import Script from "next/script";
@@ -67,32 +66,30 @@ export default function Details(props) {
 
   const handleNavigation = () => {};
 
-  const { data: session } = useSession();
-
   // const { setLogIsOpen } = useLogModal();
 
   const handleOptionClick = (option) => {
-    if (!session) {
-      // console.log(setLogIsOpen);
-      setLogIsOpen(true);
-      // window.location.href = "/user/watch-list";
-    }
+    // if (!session) {
+    //   // console.log(setLogIsOpen);
+    //   setLogIsOpen(true);
+    //   // window.location.href = "/user/watch-list";
+    // }
     console.log(`Selected option: ${option}`);
     setIsOpen(false); // Close the dropdown after selection
 
     // Create a new object with the selected data and timestamp
     const newObj = {
       id: props?.id,
-      poster: props.uiui?.info?.results?.data?.poster,
-      duration: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.duration,
-      rating: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.rating,
+      poster: props.uiui?.results?.data?.poster,
+      duration: props.uiui?.results?.data?.animeInfo?.tvInfo?.duration,
+      rating: props.uiui?.results?.data?.animeInfo?.tvInfo?.rating,
       episodes: {
-        sub: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.sub,
-        dub: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.dub
-          ? props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.dub
+        sub: props.uiui?.results?.data?.animeInfo?.tvInfo?.sub,
+        dub: props.uiui?.results?.data?.animeInfo?.tvInfo?.dub
+          ? props.uiui?.results?.data?.animeInfo?.tvInfo?.dub
           : "",
       },
-      name: props.uiui?.info?.results?.data?.title,
+      name: props.uiui?.results?.data?.title,
 
       timestamp: new Date().toISOString(), // Add current time in ISO format
     };
@@ -148,7 +145,7 @@ export default function Details(props) {
     };
   }, []);
 
-  const gnt = props.uiui.info.results.data;
+  const gnt = props.uiui.results.data;
   // if (props.uiui) {
   //   props.lata(props?.uiui?.recommendedAnimes);
   // }
@@ -156,7 +153,7 @@ export default function Details(props) {
   const [descIsCollapsed, setDescIsCollapsed] = useState(true);
   const genre = gnt?.animeInfo?.Genres?.map((genre) => {
     return (
-      <Link 
+      <Link
         className="genre-button"
         key={genre}
         href={`/genre?id=${genre}&name=${genre}`}
@@ -182,13 +179,13 @@ export default function Details(props) {
   const studios = gnt?.animeInfo?.Studios;
   const synonyms = gnt?.animeInfo.Synonyms;
 
-  const watch2gether = () => {
-    if (!session) {
-      setLogIsOpen(true);
-    }
-  };
+  // const watch2gether = () => {
+  //   if (!session) {
+  //     setLogIsOpen(true);
+  //   }
+  // };
 
-    const pathname = usePathname();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -207,14 +204,14 @@ export default function Details(props) {
 
   return (
     <>
-      <SignInSignUpModal setLogIsOpen={setLogIsOpen} logIsOpen={logIsOpen} />
+      {/* <SignInSignUpModal setLogIsOpen={setLogIsOpen} logIsOpen={logIsOpen} /> */}
 
       <div className="details-container">
         <div className="details-header">
           <div className="details-header-primary">
             <img
               className="details-container-background"
-              src={transformURL(gnt?.poster)}
+              src={gnt?.poster}
               alt="pop"
               isAnimated={false}
             />
@@ -223,18 +220,12 @@ export default function Details(props) {
                 <div className="anime-image-wrapper">
                   <img
                     className="anime-details-poster"
-                    src={transformURL(gnt?.poster)}
+                    src={gnt?.poster}
                     alt="pop"
                   />
                 </div>
                 {gnt?.animeInfo?.Status !== "Not-yet-aired" && (
-                  <Link
-                    href={
-                      session ? `/watch2gether/create?animeId=${props?.id}` : ""
-                    }
-                    className="broad-fil"
-                    onClick={watch2gether}
-                  >
+                  <Link href={""} className="broad-fil">
                     <div className="broad-ico">
                       <PiBroadcastFill />
                     </div>

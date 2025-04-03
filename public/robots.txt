@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /random
+
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap1
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap2
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap3
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap4
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap5
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap6
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap7
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap8
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap9
+Sitemap: https://kawaii.netlify.app/api/anime/sitemap10

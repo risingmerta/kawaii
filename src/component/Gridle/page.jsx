@@ -6,11 +6,11 @@ import Share from "@/component/Share/Share";
 import "./gridle.css";
 import AnimeCollection from "@/component/MainContainer/AnimeCollection";
 import LoadingSpinner from "@/component/loadingSpinner";
-import { SessionProvider } from "next-auth/react";
 import Navbar from "../Navbar/Navbar";
 import Profilo from "../Profilo/Profilo";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import Footer from "../Footer/Footer";
+import { usePathname } from "next/navigation";
 export default function GenreSidebar(props) {
   const [selectL, setSelectL] = useState("en");
   const [profiIsOpen, setProfiIsOpen] = useState(false);
@@ -31,6 +31,7 @@ export default function GenreSidebar(props) {
       }, [20000]);
     }
   };
+  const pathname = usePathname();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const adContainer = document.getElementById("ad-container");
@@ -48,22 +49,18 @@ export default function GenreSidebar(props) {
   return (
     <>
       <div>
-        <SessionProvider>
-          <Navbar
-            lang={lang}
-            sign={sign}
-            setProfiIsOpen={setProfiIsOpen}
-            profiIsOpen={profiIsOpen}
-          />
-          {profiIsOpen ? (
-            <Profilo
-              setProfiIsOpen={setProfiIsOpen}
-              profiIsOpen={profiIsOpen}
-            />
-          ) : (
-            ""
-          )}
-          {logIsOpen ? (
+        <Navbar
+          lang={lang}
+          sign={sign}
+          setProfiIsOpen={setProfiIsOpen}
+          profiIsOpen={profiIsOpen}
+        />
+        {profiIsOpen ? (
+          <Profilo setProfiIsOpen={setProfiIsOpen} profiIsOpen={profiIsOpen} />
+        ) : (
+          ""
+        )}
+        {/* {logIsOpen ? (
             <SignInSignUpModal
               logIsOpen={logIsOpen}
               setLogIsOpen={setLogIsOpen}
@@ -71,58 +68,55 @@ export default function GenreSidebar(props) {
             />
           ) : (
             ""
-          )}
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              <div
-                style={{ width: "100%", height: "100px", overflow: "hidden" }}
-              >
-                {/* Ad container */}
-                <div id="ad-container"></div>
+          )} */}
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <div style={{ width: "100%", height: "100px", overflow: "hidden" }}>
+              {/* Ad container */}
+              <div id="ad-container"></div>
+            </div>
+            <Share
+              style={{
+                paddingTop: 40,
+                paddingBottom: 0,
+                paddingInline: 20,
+                marginTop: 80 + "px",
+                marginBottom: 0,
+              }}
+              ShareUrl={props.ShareUrl}
+              arise={props.arise}
+            />
+            <div className=" main-container d-flex  ">
+              <div className="sidebar-wrapper d-flex-fd-column">
+                <Genre data={props.datal.genres} IsLoading={IsLoading} />
+                <TopTenAnime
+                  data={props.datal.topTen}
+                  selectL={selectL}
+                  IsLoading={IsLoading}
+                />
               </div>
-              <Share
-                style={{
-                  paddingTop: 40,
-                  paddingBottom: 0,
-                  paddingInline: 20,
-                  marginTop: 80 + "px",
-                  marginBottom: 0,
-                }}
-                ShareUrl={props.ShareUrl}
-                arise={props.arise}
-              />
-              <div className=" main-container d-flex  ">
-                <div className="sidebar-wrapper d-flex-fd-column">
-                  <Genre data={props.datal.genres} IsLoading={IsLoading} />
-                  <TopTenAnime
-                    data={props.datal.topTen}
-                    selectL={selectL}
-                    IsLoading={IsLoading}
-                  />
-                </div>
-                <div className="collections-wrapper">
-                  <AnimeCollection
-                    collectionName={props.fiki || props.name + " Anime"}
-                    filterName={props.cate}
-                    fiki={props.fiki}
-                    selectL={selectL}
-                    page={props.page}
-                    data={props.data.data}
-                    IsLoading={IsLoading}
-                    totalPages={props.totalPages}
-                    genre={props?.genre || ""}
-                    isInGrid={"true"}
-                  />
-                </div>
+              <div className="collections-wrapper">
+                <AnimeCollection
+                  collectionName={props.fiki || props.name + " Anime"}
+                  filterName={props.cate}
+                  fiki={props.fiki}
+                  selectL={selectL}
+                  page={props.page}
+                  data={props.data.data}
+                  IsLoading={IsLoading}
+                  totalPages={props.totalPages}
+                  genre={props?.genre || ""}
+                  isInGrid={"true"}
+                />
               </div>
-            </>
-          )}
-          <div>
-            <Footer />
-          </div>
-        </SessionProvider>
+            </div>
+          </>
+        )}
+        <div>
+          <Footer />
+        </div>
       </div>
     </>
   );

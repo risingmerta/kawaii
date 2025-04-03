@@ -5,7 +5,6 @@ import AnimeCollection from "@/component/MainContainer/AnimeCollectionJikan";
 
 import "./az.css";
 import LoadingSpinner from "@/component/loadingSpinner";
-import { SessionProvider } from "next-auth/react";
 import Navbar from "../Navbar/Navbar";
 import Profilo from "../Profilo/Profilo";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
@@ -34,7 +33,6 @@ export default function SearchResults(props) {
   return (
     <>
       <div>
-        <SessionProvider>
           <Navbar
             lang={lang}
             sign={sign}
@@ -49,7 +47,7 @@ export default function SearchResults(props) {
           ) : (
             ""
           )}
-          {logIsOpen ? (
+          {/* {logIsOpen ? (
             <SignInSignUpModal
               logIsOpen={logIsOpen}
               setLogIsOpen={setLogIsOpen}
@@ -57,7 +55,7 @@ export default function SearchResults(props) {
             />
           ) : (
             ""
-          )}
+          )} */}
           {isLoading ? (
             <LoadingSpinner />
           ) : (
@@ -80,7 +78,6 @@ export default function SearchResults(props) {
           <div>
             <Footer />
           </div>
-        </SessionProvider>
       </div>
     </>
   );

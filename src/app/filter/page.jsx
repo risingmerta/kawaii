@@ -7,56 +7,24 @@ import Script from "next/script";
 
 // MongoDB connection detail
 export async function generateMetadata({ params }) {
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Animoon"; // Default if env is missing
   const idd = "Anime";
 
   return {
-    title: `Watch ${idd} English Sub/Dub online free on Animoon.me , free Anime Streaming`,
-    description: `Animoon is the best site to watch
+    title: `Watch ${idd} English Sub/Dub online free on ${siteName} , free Anime Streaming`,
+    description: `${siteName} is the best site to watch
                       ${idd} SUB online, or you can even
                       watch ${idd} DUB in HD quality. You
                       can also watch under rated anime
-                      on Animoon website.`,
+                      on ${siteName} website.`,
   };
 }
 // Main page function
 export default async function page({ searchParams }) {
   const searchParam = await searchParams;
-  const mongoUri =
-    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
-  const dbName = "mydatabase";
-  const homeCollectionName = "animoon-home";
 
-  const client = new MongoClient(mongoUri);
-  let data;
-
-  try {
-    // Connect to MongoDB
-    await client.connect();
-    console.log("Connected to MongoDB");
-
-    const db = client.db(dbName);
-
-    // Fetch homepage data
-    const homeCollection = db.collection(homeCollectionName.trim());
-    const document = await homeCollection.findOne({}); // Adjust query as needed
-
-    if (document) {
-      data = document;
-    } else {
-      console.log("No homepage data found in MongoDB");
-    }
-
-    // If homepage data is missing, fetch from API
-    if (!data) {
-      const res = await fetch("https://vimal.animoon.me/api/");
-      data = await res.json();
-    }
-  } catch (error) {
-    console.error("Error fetching data from MongoDB or API:", error.message);
-  } finally {
-    await client.close();
-    console.log("MongoDB connection closed");
-  }
+  const resi = await fetch("https://vimal.animoon.me/api/");
+  const data = await resi.json();
 
   const res = await fetch(
     `https://vimal.animoon.me/api/filter?page=${searchParam.page || "1"}${
@@ -85,7 +53,7 @@ export default async function page({ searchParams }) {
         src="//disgustingmad.com/a5/d2/60/a5d260a809e0ec23b08c279ab693d778.js"
       />
       <FilterComp
-        data={data}
+        data={data.results}
         filteredAnimes={filteredAnimes}
         type={searchParam.type || ""}
         status={searchParam.status || ""}
