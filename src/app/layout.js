@@ -12,10 +12,11 @@ export const metadata = {
   title: `${siteName} - Watch free Anime Online English Sub/Dub`,
   description: `${siteName} is the best site to watch Anime SUB online, or you can even watch Anime DUB in HD quality. You can also find UnderRated anime on ${siteName} website.`,
   verification: {
-    google: "qwnQljuFScz5pMwy3mHv8BC3aZh5E9J8SYfpKwpgw1E",
+    google: "6vWLiGYGbaYysAZw23FZ5HDdwMdIwRSFInfdD_KFVuk",
     "google-adsense-account": "ca-pub-9295326902131480",
   },
 };
+
 
 export default function RootLayout({ children }) {
   return (
